@@ -1,6 +1,6 @@
-USERPOOL_ID=
-USERNAME=
-PASSWORD=
+cognito_userpool_id=
+cognito_username=
+cognito_password=
 
-aws cognito-idp admin-create-user --user-pool-id $USERPOOL_ID --username $USERNAME
-aws cognito-idp admin-set-user-password --user-pool-id $USERPOOL_ID --username $USERNAME --password $PASSWORD
+aws cognito-idp admin-create-user --user-pool-id $cognito_userpool_id --cognito_username $cognito_username
+aws cognito-idp admin-set-user-password --user-pool-id $cognito_userpool_id --cognito_username $cognito_username --password $cognito_password
