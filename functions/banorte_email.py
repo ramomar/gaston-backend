@@ -42,7 +42,7 @@ def handle(event, context):
             'note': record.note,
             'amount': total_amount,
             'date': event['Records'][0]['Sns']['Timestamp'],
-            'raw': json.dumps(dataclasses.asdict(record), default=str, ensure_ascii=False)
+            'source': json.dumps(dataclasses.asdict(record), default=str, ensure_ascii=False)
         }
 
         try:
