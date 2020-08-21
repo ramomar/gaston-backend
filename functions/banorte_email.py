@@ -26,14 +26,12 @@ def _calculate_total_amount(record):
 
 
 def handle(event, context):
-    sns_event_content = json.loads(
-        event['Records'][0]['Sns']['Message'])['content']
+    sns_event_content = json.loads(event['Records'][0]['Sns']['Message'])['content']
     email_content = email.message_from_bytes(base64.b64decode(sns_event_content), policy=policy.default).get_content()
     record = banorte_email.scrape(email_content)
 
     if record.type == EXPENSE_RECORD_TYPE:
-        client = boto3.resource('dynamodb',
-                                **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
+        client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
         table = client.Table('gaston' if IS_AWS else 'gaston-local')
         total_amount = _calculate_total_amount(record)
         item = {
