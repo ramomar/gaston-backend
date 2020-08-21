@@ -9,3 +9,5 @@ Create:
 Update:
 
 `scripts/lambda-update.sh -n $FUNCTION_NAME -p aws-deploy/build/function.zip`
+
+https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
