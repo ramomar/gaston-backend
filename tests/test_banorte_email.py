@@ -9,7 +9,7 @@ EVENT_PATH = 'handle-banorte-email-event.json'
 def test_handle(load_event):
     """it should handle correctly a SNS event"""
     event = load_event(EVENT_PATH)
-    source_json = {
+    expense_json = {
         'source': 'FAST_TRANSFER_EMAIL',
         'type': 'EXPENSE',
         'note': 'Transferencias Rápidas | P',
@@ -37,7 +37,7 @@ def test_handle(load_event):
             'note': 'Transferencias Rápidas | P',
             'date': '2020-07-27T23:57:00.335Z',
             'amount': Decimal('653.48'),
-            'raw': source_json,
+            'raw': expense_json,
             'origin': 'BANORTE_EMAIL_SES',
         }
     }
@@ -55,7 +55,7 @@ def test_handle_record_is_stored(load_event, gaston_table):
         'owner_id': 'ramomar',
         'record_id': event['Records'][0]['Sns']['MessageId'],
     }
-    source_json = {
+    expense_json = {
         'source': 'FAST_TRANSFER_EMAIL',
         'type': 'EXPENSE',
         'note': 'Transferencias Rápidas | P',
@@ -81,7 +81,7 @@ def test_handle_record_is_stored(load_event, gaston_table):
         'note': 'Transferencias Rápidas | P',
         'date': '2020-07-27T23:57:00.335Z',
         'amount': Decimal('653.48'),
-        'raw': source_json,
+        'raw': expense_json,
         'origin': 'BANORTE_EMAIL_SES',
     }
 
