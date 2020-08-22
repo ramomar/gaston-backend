@@ -27,7 +27,7 @@ def test_handle(load_event):
                 'amount': '3.00',
                 'tax': '0.48',
             }
-        ]
+        ],
     }
     expected = {
         'success': True,
@@ -37,12 +37,13 @@ def test_handle(load_event):
             'note': 'Transferencias Rápidas | P',
             'date': '2020-07-27T23:57:00.335Z',
             'amount': Decimal('653.48'),
-            'source': source_json,
+            'raw': source_json,
+            'origin': 'BANORTE_EMAIL_SES',
         }
     }
     actual = banorte_email.handle(event, None)
 
-    actual['record']['source'] = json.loads(actual['record']['source'])
+    actual['record']['raw'] = json.loads(actual['record']['raw'])
 
     assert actual == expected
 
@@ -71,8 +72,8 @@ def test_handle_record_is_stored(load_event, gaston_table):
                 'name': 'fee',
                 'amount': '3.00',
                 'tax': '0.48',
-            }
-        ]
+            },
+        ],
     }
     expected = {
         'owner_id': 'ramomar',
@@ -80,14 +81,15 @@ def test_handle_record_is_stored(load_event, gaston_table):
         'note': 'Transferencias Rápidas | P',
         'date': '2020-07-27T23:57:00.335Z',
         'amount': Decimal('653.48'),
-        'source': source_json,
+        'raw': source_json,
+        'origin': 'BANORTE_EMAIL_SES',
     }
 
     banorte_email.handle(event, None)
 
     actual = gaston_table.get_item(Key=record_key)['Item']
 
-    actual['source'] = json.loads(actual['source'])
+    actual['raw'] = json.loads(actual['raw'])
 
     assert actual == expected
 

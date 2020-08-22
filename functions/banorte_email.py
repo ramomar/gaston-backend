@@ -40,7 +40,8 @@ def handle(event, context):
             'note': record.note,
             'amount': total_amount,
             'date': event['Records'][0]['Sns']['Timestamp'],
-            'source': json.dumps(dataclasses.asdict(record), default=str, ensure_ascii=False)
+            'raw': json.dumps(dataclasses.asdict(record), default=str, ensure_ascii=False),
+            'origin': 'BANORTE_EMAIL_SES',
         }
 
         try:
