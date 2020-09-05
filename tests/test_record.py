@@ -77,6 +77,7 @@ def test_get_records(gaston_table):
 
 
 def test_get_record_not_found():
+    """it should return 404 when the record is not found"""
     event = {
         'record_id': str(uuid.uuid4()),
     }
@@ -96,6 +97,7 @@ def test_get_record_not_found():
 
 
 def test_get_record(gaston_table):
+    """it should return a record"""
     record_raw = {
         'source': 'FAST_TRANSFER_EMAIL',
         'type': 'EXPENSE',
