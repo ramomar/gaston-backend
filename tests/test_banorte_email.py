@@ -41,7 +41,7 @@ def test_handle(load_event):
             'origin': 'BANORTE_EMAIL_SES',
         }
     }
-    actual = banorte_email.handle(event, None)
+    actual = banorte_email.handle(event, context=None)
 
     actual['record']['raw'] = json.loads(actual['record']['raw'])
 
@@ -104,9 +104,9 @@ def test_handle_idempotence(load_event):
         'message': 'The conditional request failed',
     }
 
-    banorte_email.handle(event, None)
+    banorte_email.handle(event, context=None)
 
-    actual = banorte_email.handle(event, None)
+    actual = banorte_email.handle(event, context=None)
 
     assert actual == expected
 
