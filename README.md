@@ -2,7 +2,9 @@
 
 This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
-### Functions
+## Functions
+
+### List of functions
 
 | Identifier | Description | Configuration variables |
 |----------------------------------------------------|--------------------|---------------|
@@ -11,19 +13,23 @@ This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 | `record.get_record` | This function gets a record by id. | OWNER_ID |
 | `record_review.post_review` | This function creates a review for a given record. | OWNER_ID |
 
-**Configuration variables**
+### Configuration variables
 
 - _OWNER_ID_: It sets the `owner_id` of the record when querying or creating.
 
-### Testing
+## Testing
 
 The test suite is composed of integration tests mainly and it depends on [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) local.
+
+In order to run the tests you should:
 
 1. Start DynamoDB local:
 `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
 2. Run: `pytest`.
 
-### Deploying
+## Deploy scripts
+
+The repository contains simple scripts to manage the functions.
 
 **Build**
 
