@@ -2,15 +2,18 @@
 
 This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
-
 ### Functions
 
-| Identifier                                               | Description        | Configuration |
+| Identifier | Description | Configuration variables |
 |----------------------------------------------------|--------------------|---------------|
 | `banorte_email.handle` | This function is triggered when an email from Banorte arrives. It parses the email using [banes](https://github.com/ramomar/banes) in order to create and insert a record in a DynamoDB table.| OWNER_ID |
 | `record.get_records` | This function fetches all records. | OWNER_ID |
 | `record.get_record` | This function gets a record by id. | OWNER_ID |
 | `record_review.post_review` | This function creates a review for a given record. | OWNER_ID |
+
+**Configuration variables**
+
+- _OWNER_ID_: It sets the `owner_id` of the record when querying or creating.
 
 ### Testing
 
