@@ -15,7 +15,7 @@ def test_post_review_record_not_found():
             'category': 'Comida'
         },
     }
-    actual = record_review.post_review(event, context=None)
+    actual = record_review.put_review(event, context=None)
     expected = {
         'statusCode': 400,
         'headers': {
@@ -35,7 +35,7 @@ def test_post_review_no_review():
     event = {
         'record_id': str(uuid.uuid4()),
     }
-    actual = record_review.post_review(event, context=None)
+    actual = record_review.put_review(event, context=None)
     expected = {
         'statusCode': 400,
         'headers': {
@@ -94,7 +94,7 @@ def test_post_review_record_found(gaston_table):
             'category': 'Educación'
         },
     }
-    actual = record_review.post_review(event, context=None)
+    actual = record_review.put_review(event, context=None)
     expected_record = {
         'owner_id': 'ramomar',
         'record_id': item_id,
