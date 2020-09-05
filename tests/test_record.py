@@ -77,7 +77,7 @@ def test_get_records(gaston_table):
 
 
 def test_get_record_not_found():
-    """it should return 404 when the record is not found"""
+    """it should return nothing when the record is not found"""
     event = {
         'record_id': str(uuid.uuid4()),
     }
