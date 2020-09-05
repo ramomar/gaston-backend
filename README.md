@@ -12,7 +12,7 @@
 
 **Test**
 
-The test suite is composed of integration tests and id depends on [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) local.
+The test suite is composed of integration tests mainly and it depends on [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) local.
 
 1. Start DynamoDB local:
 `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
