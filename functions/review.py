@@ -37,7 +37,7 @@ def post_review(event, context):
             ConditionExpression='attribute_exists(record_id)'
         )
         result = {
-            'review': update_result['Attributes'],
+            'record': update_result['Attributes'],
         }
         return {
             'statusCode': 200,

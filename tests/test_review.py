@@ -95,7 +95,7 @@ def test_post_review_record_found(gaston_table):
         },
     }
     actual = review.post_review(event, context=None)
-    expected_review = {
+    expected_record = {
         'owner_id': 'ramomar',
         'record_id': item_id,
         'note': record_raw['note'],
@@ -116,10 +116,10 @@ def test_post_review_record_found(gaston_table):
             'Content-Type': 'application/json',
         },
         'body': {
-            'review': json.dumps(expected_review, indent=4, default=str),
+            'record': json.dumps(expected_record, indent=4, default=str),
         }
     }
 
     assert actual['statusCode'] == expected['statusCode']
     assert actual['headers'] == expected['headers']
-    assert json.loads(actual['body'])['review'] == json.loads(expected['body']['review'])
+    assert json.loads(actual['body'])['record'] == json.loads(expected['body']['record'])
