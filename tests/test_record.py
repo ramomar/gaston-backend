@@ -50,7 +50,7 @@ def test_get_records(gaston_table):
         'note': record_raw['note'],
         'amount': Decimal(record_raw['amount']),
         'date': record_raw['operation_date'],
-        'raw': json.dumps(record_raw, default=str, ensure_ascii=False),
+        'raw': json.dumps(record_raw, default=str),
         'origin': 'BANORTE_EMAIL_SES',
     }
 
@@ -125,7 +125,7 @@ def test_get_record(gaston_table):
         'note': record_raw['note'],
         'amount': Decimal(record_raw['amount']),
         'date': record_raw['operation_date'],
-        'raw': json.dumps(record_raw, default=str, ensure_ascii=False),
+        'raw': json.dumps(record_raw, default=str),
         'origin': 'BANORTE_EMAIL_SES',
     }
 
