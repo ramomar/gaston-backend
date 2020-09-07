@@ -8,7 +8,7 @@ IS_AWS = os.environ.get('AWS_EXECUTION_ENV', False)
 OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
 
 
-def put_review(event, context):
+def put_record_review(event, context):
     client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
 

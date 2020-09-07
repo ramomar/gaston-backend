@@ -4,7 +4,7 @@ from decimal import Decimal
 from functions import record_review
 
 
-def test_put_review_record_not_found():
+def test_put_record_review_record_not_found():
     """it should fail when trying to update a record that doesn't exist"""
     event = {
         'record_id': str(uuid.uuid4()),
@@ -15,7 +15,7 @@ def test_put_review_record_not_found():
             'category': 'Comida'
         },
     }
-    actual = record_review.put_review(event, context=None)
+    actual = record_review.put_record_review(event, context=None)
     expected = {
         'statusCode': 400,
         'headers': {
@@ -30,12 +30,12 @@ def test_put_review_record_not_found():
     assert actual == expected
 
 
-def test_put_review_no_review():
+def test_put_record_review_no_review():
     """it should fail if there is no review"""
     event = {
         'record_id': str(uuid.uuid4()),
     }
-    actual = record_review.put_review(event, context=None)
+    actual = record_review.put_record_review(event, context=None)
     expected = {
         'statusCode': 400,
         'headers': {
@@ -50,7 +50,7 @@ def test_put_review_no_review():
     assert actual == expected
 
 
-def test_put_review_record_found(gaston_table):
+def test_put_record_review_record_found(gaston_table):
     """it should update the record"""
     record_raw = {
         'source': 'FAST_TRANSFER_EMAIL',
@@ -94,7 +94,7 @@ def test_put_review_record_found(gaston_table):
             'category': 'Educación'
         },
     }
-    actual = record_review.put_review(event, context=None)
+    actual = record_review.put_record_review(event, context=None)
     expected_record = {
         'owner_id': 'ramomar',
         'record_id': item_id,
