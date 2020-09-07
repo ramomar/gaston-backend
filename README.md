@@ -19,7 +19,7 @@ This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
 ## Testing
 
-The test suite is composed of integration tests mainly and it depends on [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) local.
+The test suite is composed mainly of integration tests and it depends on [DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) local.
 
 In order to run the tests you should:
 
