@@ -26,7 +26,6 @@ def put_review(event, context):
 
     try:
         review = dict(event['review'], **{'amount': Decimal(event['review']['amount'])}) if 'amount' in event else event['review']
-
         update_result = table.update_item(
             Key={'owner_id': OWNER_ID, 'record_id': event['record_id']},
             ReturnValues='ALL_NEW',
@@ -39,6 +38,7 @@ def put_review(event, context):
         result = {
             'record': update_result['Attributes'],
         }
+        
         return {
             'statusCode': 200,
             'headers': {
