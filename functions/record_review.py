@@ -38,7 +38,7 @@ def put_review(event, context):
         result = {
             'record': update_result['Attributes'],
         }
-        
+
         return {
             'statusCode': 200,
             'headers': {

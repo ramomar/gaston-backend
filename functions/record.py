@@ -28,7 +28,6 @@ def get_record(event, context):
     client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
     get_item_result = table.get_item(Key={'owner_id': OWNER_ID, 'record_id': event['record_id']})
-
     result = {
         'record': get_item_result['Item'] if 'Item' in get_item_result else None
     }
