@@ -79,7 +79,9 @@ def test_get_records(gaston_table):
 def test_get_record_not_found():
     """it should return nothing when the record is not found"""
     event = {
-        'record_id': str(uuid.uuid4()),
+        'pathParameters': {
+            'record_id': str(uuid.uuid4()),
+        }
     }
     actual = record.get_record(event, context=None)
     expected_body = {
@@ -132,7 +134,9 @@ def test_get_record(gaston_table):
     gaston_table.put_item(Item=item)
 
     event = {
-        'record_id': item_id,
+        'pathParameters': {
+            'record_id': item_id,
+        }
     }
     actual = record.get_record(event, context=None)
     expected_body = {
