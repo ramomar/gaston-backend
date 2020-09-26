@@ -7,13 +7,17 @@ from functions import record_review
 def test_put_record_review_record_not_found():
     """it should fail when trying to update a record that doesn't exist"""
     event = {
-        'record_id': str(uuid.uuid4()),
-        'review': {
-            'amount': 150,
-            'date': '2017-03-19T05:29:02.700Z',
-            'note': 'Cena',
-            'category': 'Comida'
+        'pathParameters': {
+            'record_id': str(uuid.uuid4()),
         },
+        'body': json.dumps({
+            'review': {
+                'amount': 150,
+                'date': '2017-03-19T05:29:02.700Z',
+                'note': 'Cena',
+                'category': 'Comida',
+            },
+        }),
     }
     actual = record_review.put_record_review(event, context=None)
     expected = {
@@ -33,7 +37,10 @@ def test_put_record_review_record_not_found():
 def test_put_record_review_no_review():
     """it should fail if there is no review"""
     event = {
-        'record_id': str(uuid.uuid4()),
+        'pathParameters': {
+            'record_id': str(uuid.uuid4()),
+        },
+        'body': None,
     }
     actual = record_review.put_record_review(event, context=None)
     expected = {
@@ -86,13 +93,17 @@ def test_put_record_review_record_found(gaston_table):
     gaston_table.put_item(Item=item)
 
     event = {
-        'record_id': item_id,
-        'review': {
-            'amount': 655,
-            'date': '2020-07-19T18:56:00.000Z',
-            'note': 'Curso de musica',
-            'category': 'Educación'
+        'pathParameters': {
+            'record_id': item_id,
         },
+        'body': json.dumps({
+            'review': {
+                'amount': 655,
+                'date': '2020-07-19T18:56:00.000Z',
+                'note': 'Curso de musica',
+                'category': 'Educación'
+            },
+        }),
     }
     actual = record_review.put_record_review(event, context=None)
     expected_record = {

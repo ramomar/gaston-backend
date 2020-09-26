@@ -11,8 +11,9 @@ OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
 def put_record_review(event, context):
     client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
+    request_body = json.loads(event['body']) if event['body'] else {}
 
-    if 'review' not in event:
+    if 'review' not in request_body:
         return {
             'statusCode': 400,
             'headers': {
@@ -25,13 +26,14 @@ def put_record_review(event, context):
         }
 
     try:
-        review = dict(event['review'], **{'amount': Decimal(event['review']['amount'])}) if 'amount' in event else event['review']
+        review = request_body['review']
+        new_review = dict(review, **{'amount': Decimal(review['amount'])})
         update_result = table.update_item(
-            Key={'owner_id': OWNER_ID, 'record_id': event['record_id']},
+            Key={'owner_id': OWNER_ID, 'record_id': event['pathParameters']['record_id']},
             ReturnValues='ALL_NEW',
             UpdateExpression='SET review = :review',
             ExpressionAttributeValues={
-                ':review': review,
+                ':review': new_review,
             },
             ConditionExpression='attribute_exists(record_id)'
         )
