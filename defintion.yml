@@ -1,0 +1,138 @@
+openapi: "3.0.1"
+info:
+  title: "gaston-api"
+  description: "The API for the gaston project (WIP)"
+  version: "2020-09-27T00:36:58Z"
+servers:
+- url: "https://{GASTON_API_ID}.execute-api.{GASTON_API_REGION}.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "/prod"
+paths:
+  /records/{record_id}/review:
+    put:
+      parameters:
+      - name: "record_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecordReview"
+        required: true
+      security:
+      - gaston-cognito-authorizer: []
+      - api_key: []
+    options:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+  /records/{record_id}:
+    get:
+      parameters:
+      - name: "record_id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      security:
+      - gaston-cognito-authorizer: []
+      - api_key: []
+    options:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+  /records:
+    get:
+      security:
+      - gaston-cognito-authorizer: []
+      - api_key: []
+    options:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+    RecordReview:
+      title: "Record review"
+      required:
+      - "review"
+      type: "object"
+      properties:
+        review:
+          required:
+          - "amount"
+          - "category"
+          - "date"
+          - "note"
+          type: "object"
+          properties:
+            date:
+              type: "string"
+              format: "date-time"
+            note:
+              type: "string"
+            amount:
+              type: "string"
+            category:
+              type: "string"
+          description: "The review"
+      description: "A record review payload"
+  securitySchemes:
+    gaston-cognito-authorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+    api_key:
+      type: "apiKey"
+      name: "x-api-key"
+      in: "header"
