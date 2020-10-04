@@ -15,6 +15,7 @@ def test_get_records_empty():
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(expected_body, indent=4),
     }
@@ -67,6 +68,7 @@ def test_get_records(gaston_table):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(expected_body, indent=4, default=str)
     }
@@ -91,6 +93,7 @@ def test_get_record_not_found():
         'statusCode': 404,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(expected_body, indent=4, default=str)
     }
@@ -146,6 +149,7 @@ def test_get_record(gaston_table):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(expected_body, indent=4, default=str)
     }

@@ -19,6 +19,7 @@ def get_records(event, context):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(result, indent=4, default=str),
     }
@@ -36,6 +37,7 @@ def get_record(event, context):
         'statusCode': 200 if 'Item' in get_item_result else 404,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': json.dumps(result, indent=4, default=str),
     }

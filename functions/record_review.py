@@ -18,6 +18,7 @@ def put_record_review(event, context):
             'statusCode': 400,
             'headers': {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
             'body': {
                 'code': 'NoReview',
@@ -45,6 +46,7 @@ def put_record_review(event, context):
             'statusCode': 200,
             'headers': {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
             'body': json.dumps(result, indent=4, default=str),
         }
@@ -55,6 +57,7 @@ def put_record_review(event, context):
             'statusCode': 400,
             'headers': {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             },
             'body': {
                 'code': error_details['Code'],

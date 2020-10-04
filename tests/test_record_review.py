@@ -24,6 +24,7 @@ def test_put_record_review_record_not_found():
         'statusCode': 400,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': {
             'code': 'ConditionalCheckFailedException',
@@ -47,6 +48,7 @@ def test_put_record_review_no_review():
         'statusCode': 400,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': {
             'code': 'NoReview',
@@ -125,6 +127,7 @@ def test_put_record_review_record_found(gaston_table):
         'statusCode': 200,
         'headers': {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
         },
         'body': {
             'record': json.dumps(expected_record, indent=4, default=str),
