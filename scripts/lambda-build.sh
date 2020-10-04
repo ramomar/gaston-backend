@@ -30,7 +30,7 @@ mkdir $dir/build
 cp $path $dir/build
 
 # Install dependencies
-pip install -r requirements.txt --target $dir/build
+pip install . --target $dir/build
 
 # Zip function sources
 cd $dir/build
