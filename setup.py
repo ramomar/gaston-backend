@@ -18,5 +18,8 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
     ],
     python_requires='>=3.7',
-    install_requires=[],
+    install_requires=[
+        'boto3==1.14.44',
+        'banes-ramomar @ git+ssh://git@github.com/ramomar/banes.git@v1.0.0',
+    ],
 )
