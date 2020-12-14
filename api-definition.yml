@@ -1,8 +1,8 @@
 openapi: "3.0.1"
 info:
   title: "gaston-api"
-  description: "The API for the gaston project (WIP)"
-  version: "2020-09-27T00:36:58Z"
+  description: "The API for the gaston project"
+  version: "2020-12-14T02:09:48Z"
 servers:
 - url: "https://{GASTON_API_ID}.execute-api.{GASTON_API_REGION}.amazonaws.com/{basePath}"
   variables:
@@ -23,6 +23,14 @@ paths:
             schema:
               $ref: "#/components/schemas/RecordReview"
         required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
       security:
       - gaston-cognito-authorizer: []
       - api_key: []
@@ -52,6 +60,14 @@ paths:
         required: true
         schema:
           type: "string"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
       security:
       - gaston-cognito-authorizer: []
       - api_key: []
@@ -75,6 +91,44 @@ paths:
                 $ref: "#/components/schemas/Empty"
   /records:
     get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
+      security:
+      - gaston-cognito-authorizer: []
+      - api_key: []
+    options:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+  /categories:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
       security:
       - gaston-cognito-authorizer: []
       - api_key: []
