@@ -1,5 +1,6 @@
 import os
 import json
+import copy
 import boto3
 from decimal import Decimal
 import botocore.exceptions
@@ -37,9 +38,15 @@ def put_record_review(event, context):
                 ':review': new_review,
             },
             ConditionExpression='attribute_exists(record_id)'
-        )
+        )['Attributes']
+        record = copy.deepcopy(update_result)
+        review = copy.deepcopy(update_result['review'])
+
+        del record['review']
+
         result = {
-            'record': update_result['Attributes'],
+            'record': record,
+            'review': review,
         }
 
         return {

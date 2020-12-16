@@ -116,12 +116,12 @@ def test_put_record_review_record_found(gaston_table):
         'date': record_raw['operation_date'],
         'raw': json.dumps(record_raw, default=str, ensure_ascii=False),
         'origin': 'BANORTE_EMAIL_SES',
-        'review': {
-            'amount': '655',
-            'date': '2020-07-19T18:56:00.000Z',
-            'note': 'Curso de musica',
-            'category': 'Educación'
-        },
+    }
+    expected_review = {
+        'amount': '655',
+        'date': '2020-07-19T18:56:00.000Z',
+        'note': 'Curso de musica',
+        'category': 'Educación',
     }
     expected = {
         'statusCode': 200,
@@ -131,6 +131,7 @@ def test_put_record_review_record_found(gaston_table):
         },
         'body': {
             'record': json.dumps(expected_record, indent=4, default=str),
+            'review': json.dumps(expected_review, indent=4, default=str),
         }
     }
 
