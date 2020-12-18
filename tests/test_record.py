@@ -309,9 +309,7 @@ def test_get_unreviewed_records(gaston_table):
     gaston_table.put_item(Item=reviewed_record)
 
     event = {
-        'pathParameters': {
-            'status': 'unreviewed',
-        },
+        'path': '/records/unreviewed',
     }
     actual = record.get_records(event, context=None)
     expected_body = {
