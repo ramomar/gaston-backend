@@ -13,12 +13,14 @@ def get_records(event, context):
     client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
     page = event.get('queryStringParameters', {}).get('page', None)
+    status = event.get('pathParameters', {}).get('status', None)
     exclusive_start_key = json.loads(base64.b64decode(page)) if page else None
     query = table.query(KeyConditionExpression=Key('owner_id').eq(OWNER_ID),
                         Limit=GET_RECORDS_QUERY_LIMIT,
-                        **{'ExclusiveStartKey': exclusive_start_key} if exclusive_start_key else {})
+                        **{'ExclusiveStartKey': exclusive_start_key} if exclusive_start_key else {},
+                        **{'FilterExpression': 'attribute_not_exists(review)'} if status == 'unreviewed' else {}
+                        )
     last_evaluated_key = query.get('LastEvaluatedKey', None)
-    print(last_evaluated_key)
     result = {
         'records': query['Items'],
         'hasMore': last_evaluated_key is not None,
