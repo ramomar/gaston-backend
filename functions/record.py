@@ -1,18 +1,28 @@
 import os
 import json
+import base64
 import boto3
 from boto3.dynamodb.conditions import Key
 
 IS_AWS = os.environ.get('AWS_EXECUTION_ENV', False)
 OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
+GET_RECORDS_QUERY_LIMIT = 10
 
 
 def get_records(event, context):
     client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
-    query = table.query(KeyConditionExpression=Key('owner_id').eq(OWNER_ID))
+    page = event.get('queryStringParameters', {}).get('page', None)
+    exclusive_start_key = json.loads(base64.b64decode(page)) if page else None
+    query = table.query(KeyConditionExpression=Key('owner_id').eq(OWNER_ID),
+                        Limit=GET_RECORDS_QUERY_LIMIT,
+                        **{'ExclusiveStartKey': exclusive_start_key} if exclusive_start_key else {})
+    last_evaluated_key = query.get('LastEvaluatedKey', None)
+    print(last_evaluated_key)
     result = {
         'records': query['Items'],
+        'hasMore': last_evaluated_key is not None,
+        'nextPage': base64.urlsafe_b64encode(json.dumps(last_evaluated_key, default=str, ensure_ascii=False).encode('utf-8')).decode('utf-8') if last_evaluated_key else None,
     }
 
     return {
@@ -30,7 +40,7 @@ def get_record(event, context):
     table = client.Table('gaston' if IS_AWS else 'gaston-local')
     get_item_result = table.get_item(Key={'owner_id': OWNER_ID, 'record_id': event['pathParameters']['record_id']})
     result = {
-        'record': get_item_result['Item'] if 'Item' in get_item_result else None
+        'record': get_item_result.get('Item', None)
     }
 
     return {
