@@ -18,7 +18,7 @@ def get_records(event, context):
     query = table.query(KeyConditionExpression=Key('owner_id').eq(OWNER_ID),
                         Limit=GET_RECORDS_QUERY_LIMIT,
                         **{'ExclusiveStartKey': exclusive_start_key} if exclusive_start_key else {},
-                        **{'FilterExpression': 'attribute_not_exists(review)'} if status == 'unreviewed' else {}
+                        **{'FilterExpression': 'attribute_not_exists(review)'} if status == 'unreviewed' else {},
                         )
     last_evaluated_key = query.get('LastEvaluatedKey', None)
     result = {
