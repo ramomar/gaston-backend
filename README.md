@@ -12,7 +12,7 @@ This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 | `record.get_records` | This function fetches all records. | OWNER_ID, GET_RECORDS_QUERY_LIMIT |
 | `record.get_record` | This function gets a record by id. | OWNER_ID |
 | `record_review.put_record_review` | This function creates a review for a given record. | OWNER_ID |
-| `category.get_categories` | This function fetches all categories. Currently, the categories are hardcoded. | None |
+| `category.get_categories` | This function fetches all categories. Currently all the categories are hardcoded. | None |
 
 ### Configuration variables
 
