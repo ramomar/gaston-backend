@@ -208,7 +208,10 @@ def test_paginate_records_next_page(gaston_table):
 
     old_record = record.GET_RECORDS_QUERY_LIMIT
     record.GET_RECORDS_QUERY_LIMIT = 1
-    first_page_records = record.get_records({}, context=None)
+    event = {
+        'queryStringParameters': None,
+    }
+    first_page_records = record.get_records(event, context=None)
     next_page_event = {
         'queryStringParameters': {
             'page': json.loads(first_page_records['body'])['nextPage'],
