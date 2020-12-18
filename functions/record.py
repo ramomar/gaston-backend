@@ -6,7 +6,7 @@ from boto3.dynamodb.conditions import Key
 
 IS_AWS = os.environ.get('AWS_EXECUTION_ENV', False)
 OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
-GET_RECORDS_QUERY_LIMIT = 10
+GET_RECORDS_QUERY_LIMIT = os.environ.get('GET_RECORDS_QUERY_LIMIT', 10)
 
 
 def get_records(event, context):
