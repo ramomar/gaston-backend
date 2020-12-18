@@ -10,8 +10,8 @@ import botocore.exceptions
 from banes.records import EXPENSE_RECORD_TYPE
 from banes import banorte_email
 
+IS_AWS = bool(os.environ.get('AWS_EXECUTION_ENV', False))
 OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
-IS_AWS = os.environ.get('AWS_EXECUTION_ENV', False)
 
 
 def _extra_amount_total(extra_amount):

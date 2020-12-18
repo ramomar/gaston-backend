@@ -5,7 +5,7 @@ import boto3
 from decimal import Decimal
 import botocore.exceptions
 
-IS_AWS = os.environ.get('AWS_EXECUTION_ENV', False)
+IS_AWS = bool(os.environ.get('AWS_EXECUTION_ENV', False))
 OWNER_ID = os.environ.get('OWNER_ID', 'ramomar')
 
 
