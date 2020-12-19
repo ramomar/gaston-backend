@@ -10,7 +10,6 @@ def test_get_records_empty():
     actual = record.get_records(event, context=None)
     expected_body = {
         'records': [],
-        'hasMore': False,
         'nextPage': None,
     }
     expected = {
@@ -65,7 +64,6 @@ def test_get_records(gaston_table):
         'records': [
             item,
         ],
-        'hasMore': False,
         'nextPage': None,
     }
     expected = {
@@ -125,7 +123,6 @@ def test_paginate_records(gaston_table):
         'records': [
             item,
         ],
-        'hasMore': True,
         'nextPage': 'eyJyZWNvcmRfaWQiOiAiNWYwMThiM2QtZTUwZS00NGM5LWE1NDAtMTcxN2UwMGYwOWJhIiwgIm93bmVyX2lkIjogInJhbW9tYXIifQ==',
     }
     expected = {
@@ -224,7 +221,6 @@ def test_paginate_records_next_page(gaston_table):
             item_2,
         ],
         # Even if it's the last item, DynamoDb still returns a LastEvaluatedKey. The next query will return empty.
-        'hasMore': True,
         'nextPage': 'eyJyZWNvcmRfaWQiOiAiZTEyYzAyMDgtMjUwZi00MjMxLTg1OGItZWQ4MmZmYTRlZDVlIiwgIm93bmVyX2lkIjogInJhbW9tYXIifQ==',
     }
     expected = {
@@ -319,7 +315,6 @@ def test_get_unreviewed_records(gaston_table):
         'records': [
             unreviewed_record,
         ],
-        'hasMore': False,
         'nextPage': None,
     }
     expected = {

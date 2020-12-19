@@ -23,7 +23,6 @@ def get_records(event, context):
     last_evaluated_key = query.get('LastEvaluatedKey', None)
     result = {
         'records': query['Items'],
-        'hasMore': last_evaluated_key is not None,
         'nextPage': base64.urlsafe_b64encode(json.dumps(last_evaluated_key, default=str, ensure_ascii=False).encode('utf-8')).decode('utf-8') if last_evaluated_key else None,
     }
 
