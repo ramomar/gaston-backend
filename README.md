@@ -29,7 +29,7 @@ In order to run the tests you should:
 `java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb`
 2. Run: `pytest`.
 
-## Deploy scripts
+## Scripts
 
 The repository contains simple scripts to manage the functions.
 
