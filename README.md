@@ -16,7 +16,8 @@ This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
 ### Configuration variables
 
-- _OWNER_ID_: It sets the `owner_id` of the record when querying or creating.
+- _OWNER_ID_: Sets the `owner_id` of the record when querying or creating.
+- _GET_RECORDS_QUERY_LIMIT_: Sets the number of records returned in the response before paginating.
 
 ## Testing
 
