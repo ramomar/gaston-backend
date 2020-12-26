@@ -7,7 +7,7 @@ import dataclasses
 import base64
 import boto3
 import botocore.exceptions
-from banes.records import EXPENSE_RECORD_TYPE
+import banes.records as records
 from banes import banorte_email
 
 IS_AWS = bool(os.environ.get('AWS_EXECUTION_ENV', False))
@@ -19,10 +19,25 @@ def _extra_amount_total(extra_amount):
 
 
 def _calculate_total_amount(record):
-    amounts = record.extra_amounts
-    extra_amount_total = sum([_extra_amount_total(ea) for ea in amounts]) if amounts is not None else 0
+    has_extra_amounts = record.type == records.EXPENSE_RECORD_TYPE and record.extra_amounts is not None
+    extra_amount_total = sum([_extra_amount_total(ea) for ea in record.extra_amounts])\
+        if has_extra_amounts else Decimal(0)
 
     return Decimal(record.amount) + extra_amount_total
+
+
+def _make_item(record, record_id, date):
+    total_amount = _calculate_total_amount(record)
+    return {
+        'owner_id': OWNER_ID,
+        'record_id': record_id,
+        'note': record.note,
+        'amount': total_amount,
+        'date': date,
+        'raw': json.dumps(dataclasses.asdict(record), default=str),
+        'origin': 'BANORTE_EMAIL_SES',
+        'type': record.type,
+    }
 
 
 def handle(event, context):
@@ -30,35 +45,35 @@ def handle(event, context):
     email_content = email.message_from_bytes(base64.b64decode(sns_event_content), policy=policy.default).get_content()
     record = banorte_email.scrape(email_content)
 
-    if record.type == EXPENSE_RECORD_TYPE:
-        client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
-        table = client.Table('gaston' if IS_AWS else 'gaston-local')
-        total_amount = _calculate_total_amount(record)
-        item = {
-            'owner_id': OWNER_ID,
-            'record_id': event['Records'][0]['Sns']['MessageId'],
-            'note': record.note,
-            'amount': total_amount,
-            'date': event['Records'][0]['Sns']['Timestamp'],
-            'raw': json.dumps(dataclasses.asdict(record), default=str),
-            'origin': 'BANORTE_EMAIL_SES',
+    if record.type == records.ACCOUNT_OPERATION_TYPE:
+        return {
+            'success': False,
+            'code': 'NotImplemented',
+            'message':  'Insertion of account operation records not implemented',
         }
 
-        try:
-            table.put_item(
-                Item=item,
-                ConditionExpression='attribute_not_exists(record_id)',
-            )
+    try:
+        client = boto3.resource('dynamodb', **{} if IS_AWS else {'endpoint_url': 'http://localhost:8000'})
+        table = client.Table('gaston' if IS_AWS else 'gaston-local')
+        item = _make_item(
+            record,
+            event['Records'][0]['Sns']['MessageId'],
+            event['Records'][0]['Sns']['Timestamp'],
+        )
+        table.put_item(
+            Item=item,
+            ConditionExpression='attribute_not_exists(record_id)',
+        )
 
-            return {
-                'success': True,
-                'record': item,
-            }
-        except botocore.exceptions.ClientError as error:
-            error_details = error.response['Error']
+        return {
+            'success': True,
+            'record': item,
+        }
+    except botocore.exceptions.ClientError as error:
+        error_details = error.response['Error']
 
-            return {
-                'success': False,
-                'code': error_details['Code'],
-                'message': error_details['Message'],
-            }
+        return {
+            'success': False,
+            'code': error_details['Code'],
+            'message': error_details['Message'],
+        }

@@ -1,12 +1,13 @@
 import json
 from decimal import Decimal
+import dataclasses
 from functions import banorte_email
-from banes.records import ExpenseRecord, ExtraAmount, EXPENSE_RECORD_TYPE
+import banes.records as records
 
 EVENT_PATH = 'handle-banorte-email-event.json'
 
 
-def test_handle(load_event):
+def test_handle_event(load_event):
     """it should handle correctly a SNS event"""
     event = load_event(EVENT_PATH)
     expense_json = {
@@ -39,6 +40,7 @@ def test_handle(load_event):
             'amount': Decimal('653.48'),
             'raw': expense_json,
             'origin': 'BANORTE_EMAIL_SES',
+            'type': 'EXPENSE',
         }
     }
     actual = banorte_email.handle(event, context=None)
@@ -49,7 +51,7 @@ def test_handle(load_event):
 
 
 def test_handle_record_is_stored(load_event, gaston_table):
-    "it should store a record"
+    """it should store a record"""
     event = load_event(EVENT_PATH)
     record_key = {
         'owner_id': 'ramomar',
@@ -83,12 +85,12 @@ def test_handle_record_is_stored(load_event, gaston_table):
         'amount': Decimal('653.48'),
         'raw': expense_json,
         'origin': 'BANORTE_EMAIL_SES',
+        'type': 'EXPENSE',
     }
 
     banorte_email.handle(event, None)
 
     actual = gaston_table.get_item(Key=record_key)['Item']
-
     actual['raw'] = json.loads(actual['raw'])
 
     assert actual == expected
@@ -97,7 +99,6 @@ def test_handle_record_is_stored(load_event, gaston_table):
 def test_handle_idempotence(load_event):
     """it should not store the same record twice"""
     event = load_event(EVENT_PATH)
-
     expected = {
         'success': False,
         'code': 'ConditionalCheckFailedException',
@@ -111,31 +112,89 @@ def test_handle_idempotence(load_event):
     assert actual == expected
 
 
-def test__calculate_total_amount(load_event):
-    """it should compute the total amount correctly"""
-    event = load_event(EVENT_PATH)
-
-    record = ExpenseRecord(
+def test__make_item_expense():
+    """it should create an item from an expense record"""
+    expense = records.ExpenseRecord(
         source='TEST',
-        type=EXPENSE_RECORD_TYPE,
+        type=records.EXPENSE_RECORD_TYPE,
         note='Test record',
         amount='10',
         extra_amounts=[
-            ExtraAmount(
+            records.ExtraAmount(
                 name='fee',
                 amount='5',
                 tax='5'
             ),
-            ExtraAmount(
+            records.ExtraAmount(
                 name='another fee',
                 amount='5',
                 tax='5',
             ),
         ],
     )
+    record_id = '8203565b-41a0-46bc-bd63-809eefbf71f9'
+    date = '1609007911591'
+    expected = {
+        'owner_id': 'ramomar',
+        'record_id': record_id,
+        'note': 'Test record',
+        'amount': Decimal('30'),
+        'date': date,
+        'raw': json.dumps(dataclasses.asdict(expense), default=str),
+        'origin': 'BANORTE_EMAIL_SES',
+        'type': 'EXPENSE',
+    }
+    actual = banorte_email._make_item(expense, record_id, date)
 
+    assert expected == actual
+
+
+def test__make_item_income():
+    """it should create an item from an income record"""
+    income = records.IncomeRecord(
+        source='TEST',
+        type=records.INCOME_RECORD_TYPE,
+        note='Pago de la comida',
+        amount='10',
+    )
+    record_id = '8203565b-41a0-46bc-bd63-809eefbf71f9'
+    date = '1609007911591'
+    expected = {
+        'owner_id': 'ramomar',
+        'record_id': record_id,
+        'note': 'Pago de la comida',
+        'amount': Decimal('10'),
+        'date': date,
+        'raw': json.dumps(dataclasses.asdict(income), default=str),
+        'origin': 'BANORTE_EMAIL_SES',
+        'type': 'INCOME',
+    }
+    actual = banorte_email._make_item(income, record_id, date)
+
+    assert expected == actual
+
+
+def test__calculate_total_amount():
+    """it should compute the total amount correctly"""
+    record = records.ExpenseRecord(
+        source='TEST',
+        type=records.EXPENSE_RECORD_TYPE,
+        note='Test record',
+        amount='10',
+        extra_amounts=[
+            records.ExtraAmount(
+                name='fee',
+                amount='5',
+                tax='5',
+            ),
+            records.ExtraAmount(
+                name='another fee',
+                amount='5',
+                tax='5',
+            ),
+        ],
+    )
     expected = Decimal(30)
-
     actual = banorte_email._calculate_total_amount(record)
 
     assert actual == expected
