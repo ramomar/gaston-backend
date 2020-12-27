@@ -7,7 +7,7 @@ import dataclasses
 import base64
 import boto3
 import botocore.exceptions
-import banes.records as records
+from banes import records
 from banes import banorte_email
 
 IS_AWS = bool(os.environ.get('AWS_EXECUTION_ENV', False))
