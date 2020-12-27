@@ -1,6 +1,6 @@
 # gaston-backend
 
-This is the backend for the [Gaston](https://github.com/ramomar/gaston) project.
+This is a very simple backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
 ## Functions
 
