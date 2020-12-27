@@ -19,7 +19,7 @@ def test_handle_event(load_event):
         'application_date': None,
         'receiver': {
             'name': 'No capturado',
-            'bank': 'BANCO'
+            'bank': 'BANCO',
         },
         'channel': None,
         'extra_amounts': [
@@ -50,6 +50,27 @@ def test_handle_event(load_event):
     assert actual == expected
 
 
+def test_handle_record_is_account_operation_record(mocker, load_event):
+    """it should raise an exception when the record is an account operation record"""
+    event = load_event(EVENT_PATH)
+    account_operation_record = records.AccountOperationRecord(
+        source='EMAIL_CHANGED',
+        type=records.ACCOUNT_OPERATION_TYPE,
+        note='El email se ha actualizado con exito | viejo_email@mail.com | nuevo_email@mail.com',
+    )
+
+    mocker.patch('banes.banorte_email.scrape', return_value=account_operation_record)
+
+    expected = {
+        'success': False,
+        'code': 'NotImplemented',
+        'message': 'Insertion of account operation records not implemented'
+    }
+    actual = banorte_email.handle(event, None)
+
+    assert actual == expected
+
+
 def test_handle_record_is_stored(load_event, gaston_table):
     """it should store a record"""
     event = load_event(EVENT_PATH)
@@ -66,7 +87,7 @@ def test_handle_record_is_stored(load_event, gaston_table):
         'application_date': None,
         'receiver': {
             'name': 'No capturado',
-            'bank': 'BANCO'
+            'bank': 'BANCO',
         },
         'channel': None,
         'extra_amounts': [
