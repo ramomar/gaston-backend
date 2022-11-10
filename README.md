@@ -13,10 +13,6 @@ Implemented via AWS API Gateway. Please note that `OPTIONS` requests are for COR
 
 ### Records
 
-`PUT /records/{record_id}/review`
-
-`OPTIONS /records/{record_id}/review`
-
 `GET /records/{record_id}`
 
 `OPTIONS /records/{record_id}`
@@ -24,6 +20,12 @@ Implemented via AWS API Gateway. Please note that `OPTIONS` requests are for COR
 `GET /records`
 
 `OPTIONS /records`
+
+### Record reviews
+
+`PUT /records/{record_id}/review`
+
+`OPTIONS /records/{record_id}/review`
 
 ### Categories
 
