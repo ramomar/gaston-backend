@@ -2,6 +2,36 @@
 
 This is a very simple backend for the [Gaston](https://github.com/ramomar/gaston) project.
 
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/10622989/200975223-466dac5c-3beb-481c-8c69-c82a574c0e65.png" />
+</p>
+
+
+## API
+
+Implemented via AWS API Gateway. Please note that `OPTIONS` requests are for CORS preflight requests.
+
+### Records
+
+`PUT /records/{record_id}/review`
+
+`OPTIONS /records/{record_id}/review`
+
+`GET /records/{record_id}`
+
+`OPTIONS /records/{record_id}`
+
+`GET /records`
+
+`OPTIONS /records`
+
+### Categories
+
+`GET /categories`
+
+`OPTIONS /categories`
+
+
 ## Functions
 
 ### List of functions
